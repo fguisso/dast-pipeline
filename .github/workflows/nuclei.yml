@@ -1,0 +1,40 @@
+name: Nuclei Scan
+on: 
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+jobs:
+  dast:
+    name: Scan application in ephemeral environment
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build application container
+        run: docker build --tag doryl .
+
+      - name: Start application using docker
+        run: docker run -d -p 8080:8080 --name doryl -e PORT=8080 -e INTERNAL_PORT=3000 doryl
+
+      - name: Scanning with Nuclei
+        uses: projectdiscovery/nuclei-action@main
+        with:
+          target: http://localhost:8080
+          templates: .nuclei/ssrf.yaml
+          github-report: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Stop application
+        if: always()
+        run: docker stop doryl
+     
+      - name: GitHub Workflow artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: nuclei.log
+          path: nuclei.log
+
