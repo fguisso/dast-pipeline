@@ -1,0 +1,26 @@
+id: ssrf-oob
+info:
+  name: SSRF Out of Band
+  author: fguisso
+  severity: high
+  description: Scan for server-side request forgery out of band
+  tags: ssrf, oob, blind
+
+requests:  
+  - raw:
+    - |
+      POST /check HTTP/1.1
+      Content-type: application/x-www-form-urlencoded
+
+      target={{interactsh-url}}/ssrf
+
+    matchers:
+      - type: word
+        part: interactsh_protocol
+        words:
+          - "http"
+
+      - type: regex
+        part: interactsh_request
+        regex:
+          - "ssrf"
