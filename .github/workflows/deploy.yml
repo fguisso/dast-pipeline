@@ -1,7 +1,6 @@
 name: Deploy and scan
 
-on: 
-push:
+on:
   workflow_dispatch:
 
 jobs:
@@ -13,9 +12,10 @@ jobs:
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "doryl" #Must be unique in Heroku
-          heroku_email: "fguisso@gmail.com"      - name: Scanning with Nuclei
+          heroku_email: "fguisso@gmail.com"      
 
-      - uses: projectdiscovery/nuclei-action@main
+      - name: Scanning with Nuclei
+        uses: projectdiscovery/nuclei-action@main
         with:
           target: http://doryl.heroku.io/
           templates: .nuclei/ssrf.yaml
