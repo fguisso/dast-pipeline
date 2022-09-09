@@ -33,6 +33,12 @@ func SiteCheckPage(c echo.Context) error {
 
 	domain, ips := lookupIPDomain(target)
 	headers, missing, body := httpGet(target)
+
+	// re := regexp.MustCompile(`127.0.0.1|localhost`)
+	// if re.MatchString(target) {
+	//     return c.Render(http.StatusOK, "index.html", map[string]interface{}{})
+	// }
+
 	return c.Render(http.StatusOK, "check.html", map[string]interface{}{
 		"target":     target,
 		"domain":     domain,

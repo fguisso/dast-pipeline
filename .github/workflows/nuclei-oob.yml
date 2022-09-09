@@ -23,7 +23,7 @@ jobs:
         uses: projectdiscovery/nuclei-action@main
         with:
           target: http://localhost:8080
-          templates: .nuclei/ssrf.yaml
+          templates: .nuclei/ssrf-oob.yaml
           github-report: true
           github-token: ${{ secrets.GITHUB_TOKEN }}
 

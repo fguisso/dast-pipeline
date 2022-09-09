@@ -14,6 +14,7 @@ requests:
 
       target=http://localhost
 
+    matchers-condition: and
     matchers:
       - type: status
         status:

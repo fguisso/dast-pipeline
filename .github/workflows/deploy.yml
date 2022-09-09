@@ -1,0 +1,30 @@
+name: Deploy and scan
+
+on: 
+push:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "doryl" #Must be unique in Heroku
+          heroku_email: "fguisso@gmail.com"      - name: Scanning with Nuclei
+
+      - uses: projectdiscovery/nuclei-action@main
+        with:
+          target: http://doryl.heroku.io/
+          templates: .nuclei/ssrf.yaml
+          github-report: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: GitHub Workflow artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: nuclei.log
+          path: nuclei.log
+

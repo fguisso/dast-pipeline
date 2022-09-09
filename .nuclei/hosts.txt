@@ -1,3 +1,0 @@
-http://localhost:8080
-http://localhost:8080/check
-http://localhost:8080/favicon.ico
