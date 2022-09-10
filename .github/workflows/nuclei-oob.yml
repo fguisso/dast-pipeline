@@ -24,6 +24,7 @@ jobs:
         with:
           target: http://localhost:8080
           templates: .nuclei/ssrf-oob.yaml
+          flags: -debug
           github-report: true
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
